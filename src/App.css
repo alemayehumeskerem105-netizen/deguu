@@ -1,0 +1,354 @@
+/* Global */
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Hero Section */
+.hero-section {
+  position: relative;
+  width: 90%;                /* reduce width from full */
+  max-width: 1200px;         /* optional max width */
+  margin: 40px auto;          /* center horizontally and top/bottom spacing */
+  height: 60vh;               /* flexible height */
+  background-image: url("https://thumbs.dreamstime.com/b/farmers-plowing-field-plow-oxen-ethiopia-oromia-region-chancho-village-gaba-robi-oromo-largest-ethnic-group-108294822.jpg?w=768");
+  background-size: cover;     
+  background-position: center;  
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px;             /* spacing inside container */
+  color: white;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+  border-radius: 20px;        /* rounded corners */
+  overflow: hidden;
+}
+
+
+/* Hero Title */
+.hero-section h1 {
+  font-size: 3rem;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Hero Subtitle */
+.hero-section p {
+  font-size: 1.5rem;
+  margin-top: 1rem;
+}
+
+/* Search Bar */
+.search-bar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.search-bar input {
+  padding: 10px 15px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px 0 0 6px;
+  width: 300px;
+  outline: none;
+}
+
+.search-bar .search-btn {
+  background-color: #ff7f50;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 0 6px 6px 0;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.search-bar .search-btn:hover {
+  background-color: #ff6347;
+}
+
+/* CTA Buttons */
+.cta-buttons {
+  margin-top: 20px;
+}
+
+.btn-primary, .btn-secondary {
+  display: inline-block;
+  padding: 12px 25px;
+  margin: 0 10px;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #218838;
+}
+
+.btn-secondary {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.btn-secondary:hover {
+  background-color: #0069d9;
+}
+
+/* Categories Section */
+.categories {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.categories h2 {
+  font-size: 2rem;
+  margin-bottom: 30px;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* exactly 4 columns */
+  gap: 20px; /* space between cards */
+  padding: 0 5%; /* horizontal padding same as hero */
+  box-sizing: border-box;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* exactly 4 cards per row */
+  gap: 20px; /* spacing between cards */
+  max-width: 1200px; /* optional: max width to match hero section */
+  margin: 0 auto; /* center the grid horizontally */
+  padding: 0 20px; /* horizontal padding inside the container */
+  box-sizing: border-box;
+}
+
+
+.categories {
+  padding: 60px 20px;
+
+}
+.category-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px; /* internal spacing */
+  width: 100%; /* fill the grid column */
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box; /* include padding inside width */
+}
+
+
+.category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+.category-card img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.category-card h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* Featured Products */
+.featured-products {
+  padding: 60px 20px;
+  background-color: #f1f5f9;
+  text-align: center;
+}
+
+.featured-products h2 {
+  font-size: 2rem;
+  margin-bottom: 30px;
+}
+
+.carousel {
+  display: flex;
+  overflow-x: auto;
+  gap: 20px;
+  padding-bottom: 10px;
+}
+
+.product-card {
+  flex: 0 0 220px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+  padding: 15px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+.product-card img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.product-card h4 {
+  font-size: 1rem;
+  margin-bottom: 5px;
+}
+
+.product-card p {
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+
+/* How It Works Section */
+.how-it-works {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.how-it-works h2 {
+  font-size: 2rem;
+  margin-bottom: 40px;
+}
+
+.steps {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+}
+
+.step {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  width: 220px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.step:hover {
+  transform: translateY(-5px);
+}
+
+.step span {
+  display: inline-block;
+  background-color: #28a745;
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 50%;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+/* Testimonials */
+.testimonials {
+  padding: 60px 20px;
+  background-color: #f1f5f9;
+  text-align: center;
+}
+
+.testimonials h2 {
+  font-size: 2rem;
+  margin-bottom: 40px;
+}
+
+.testimonial-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+}
+
+.testimonial-card {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  width: 250px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+  font-style: italic;
+}
+
+/* CTA Section */
+.cta {
+  padding: 60px 20px;
+  text-align: center;
+  background-color: #28a745;
+  color: #fff;
+}
+
+.cta h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.cta .btn-primary {
+  background-color: #fff;
+  color: #28a745;
+  font-weight: bold;
+}
+
+.cta .btn-primary:hover {
+  background-color: #f1f1f1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .steps {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .carousel {
+    overflow-x: scroll;
+  }
+
+  .category-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+
+  .hero-section h1 {
+    font-size: 2rem;
+  }
+
+  .hero-section p {
+    font-size: 1.2rem;
+  }
+
+  .hero-overlay {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-section h1 {
+    font-size: 1.5rem;
+  }
+
+  .hero-section p {
+    font-size: 1rem;
+  }
+}
