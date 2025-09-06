@@ -1,86 +1,73 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { loadProducts, updateProduct } from "../mockData";
 
 export default function EditProduct() {
-  const { productId } = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
-  const [product, setProduct] = useState({ name: '', description: '', price: '' });
-  const [loading, setLoading] = useState(true);
+  const [product, setProduct] = useState({
+    name: "",
+    price: "",
+    description: "",
+    image: null,
+  });
 
+  // Load the product
   useEffect(() => {
-    fetch(`http://localhost:5000/api/products/${productId}`)
-      .then(res => {
-        if (!res.ok) throw new Error('Product not found');
-        return res.json();
-      })
-      .then(data => {
-        setProduct(data);
-        setLoading(false);
-      })
-      .catch(() => navigate('/my-products'));
-  }, [productId, navigate]);
+    const products = loadProducts();
+    const p = products.find((prod) => prod.id === id);
+    if (p) setProduct(p);
+  }, [id]);
 
-  const handleChange = (e) => {
-    setProduct(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  // Handle image upload
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => setProduct((prev) => ({ ...prev, image: reader.result }));
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch(`http://localhost:5000/api/products/${productId}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(product),
-    })
-      .then(res => {
-        if (!res.ok) throw new Error('Failed to update');
-        alert('Product updated!');
-        navigate('/my-products');
-      })
-      .catch(err => alert(err.message));
+    updateProduct(id, product);
+    navigate("/my-products");
   };
 
-  if (loading) return <p>Loading...</p>;
-
   return (
-    <form onSubmit={handleSubmit} className="p-4 max-w-md mx-auto">
-      <label className="block mb-2">
-        Name:
+    <div className="p-4 max-w-md mx-auto">
+      <h2 className="text-2xl font-bold mb-4">✏️ Edit Product</h2>
+      <form onSubmit={handleSubmit} className="space-y-3">
         <input
           type="text"
-          name="name"
           value={product.name}
-          onChange={handleChange}
+          placeholder="Product Name"
+          className="w-full border p-2 rounded"
+          onChange={(e) => setProduct({ ...product, name: e.target.value })}
           required
-          className="border p-2 w-full"
         />
-      </label>
-
-      <label className="block mb-2">
-        Description:
-        <textarea
-          name="description"
-          value={product.description}
-          onChange={handleChange}
-          required
-          className="border p-2 w-full"
-        />
-      </label>
-
-      <label className="block mb-2">
-        Price:
         <input
           type="number"
-          name="price"
           value={product.price}
-          onChange={handleChange}
+          placeholder="Price"
+          className="w-full border p-2 rounded"
+          onChange={(e) => setProduct({ ...product, price: e.target.value })}
           required
-          className="border p-2 w-full"
         />
-      </label>
-
-      <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded">
-        Save Changes
-      </button>
-    </form>
+        <textarea
+          value={product.description}
+          placeholder="Description"
+          rows="3"
+          className="w-full border p-2 rounded"
+          onChange={(e) => setProduct({ ...product, description: e.target.value })}
+        />
+        <input type="file" accept="image/*" onChange={handleImageUpload} className="w-full" />
+        {product.image && <img src={product.image} alt="Preview" className="w-32 h-32 mt-2 object-cover rounded" />}
+        <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded">
+          💾 Update Product
+        </button>
+      </form>
+    </div>
   );
 }

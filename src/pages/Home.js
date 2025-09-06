@@ -25,6 +25,14 @@ function Home({ user }) {
 const handleCategoryClick = (path) => {
     navigate(path); // Navigate to category page
   };
+  const handleJoinBuyer = () => {
+  navigate("/signup", { state: { redirectTo: "/farmers" } });
+};
+
+const handleJoinFarmer = () => {
+  navigate("/join-farmer");
+};
+
 
 
   // Rotate hero images every 7 seconds
@@ -62,7 +70,9 @@ const handleCategoryClick = (path) => {
           {/* CTA Buttons */}
           {!user && (
             <div className="cta-buttons">
-              <Link to="/signup" className="btn-primary">Join as Farmer</Link>
+              {/* Navigate to FarmerJoin page */}
+    <Link to="/join-farmer" className="btn-primary">Join as Farmer</Link>
+     {/* Navigate to Signup (for buyers) */}
               <Link to="/signup" className="btn-secondary">Join as Buyer</Link>
             </div>
           )}

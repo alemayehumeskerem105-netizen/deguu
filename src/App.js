@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Header from "./component/Header";
-import { useNavigate } from "react-router-dom";
+import MyOrders from "./pages/MyOrders";
+import FarmerProfile from "./pages/FarmerProfile";
+import FarmerJoin from "./pages/FarmerJoin";
+import FarmerList from "./pages/FarmerList";
+
+
 
 // Pages
 import Home from "./pages/Home";
@@ -13,6 +18,8 @@ import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import Success from "./pages/Success";
 import LivestockPage from "./pages/LivestockPage";
+import EditProduct from "./pages/EditProduct";
+import Chat from "./pages/Chat";
 
 
 // Dashboards
@@ -55,6 +62,16 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login setUser={setUser} />} />
         <Route path="/signup" element={<Signup setUser={setUser} />} />
+        <Route
+  path="/farmer-profile"
+  element={
+    <PrivateRoute roles={["farmer"]}>
+      <FarmerProfile />
+    </PrivateRoute>
+  }
+/>
+<Route path="/join-farmer" element={<FarmerJoin />} />
+
 
         {/* Dashboards */}
         <Route
@@ -65,6 +82,25 @@ export default function App() {
             </PrivateRoute>
           }
         />
+        <Route
+  path="/farmers"
+  element={
+    <PrivateRoute roles={["buyer"]}>
+      <FarmerList />
+    </PrivateRoute>
+  }
+/>
+
+        <Route
+  path="/chat"
+  element={
+    <PrivateRoute roles={["farmer", "buyer"]}>
+      <Chat />
+    </PrivateRoute>
+  }
+/>
+
+<Route path="/my-orders" element={<MyOrders />} />
 
         <Route
           path="/admin/*"
@@ -92,6 +128,14 @@ export default function App() {
             </PrivateRoute>
           }
         />
+        <Route
+          path="/edit-product/:id"
+          element={
+            <PrivateRoute roles={["farmer"]}>
+              <EditProduct />
+            </PrivateRoute>
+          }
+        />
 
         {/* Marketplace & Shopping */}
         <Route
@@ -108,15 +152,15 @@ export default function App() {
           element={<Checkout cart={cart} clearCart={() => setCart([])} />}
         />
         <Route path="/success" element={<Success />} />
-        <Route
-  path="/livestock"
-  element={
-    <PrivateRoute roles={["farmer"]}>
-      <LivestockPage />
-    </PrivateRoute>
-  }
-/>
 
+        <Route
+          path="/livestock"
+          element={
+            <PrivateRoute roles={["farmer"]}>
+              <LivestockPage />
+            </PrivateRoute>
+          }
+        />
 
         {/* Fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />

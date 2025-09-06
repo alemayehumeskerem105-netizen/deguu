@@ -7,8 +7,7 @@ export default function FarmerDashboard() {
   useEffect(() => {
     const farmer = JSON.parse(localStorage.getItem('user'));
     if (!farmer || farmer.role !== 'farmer') {
-      // Not logged in or not a farmer, redirect to login page
-      navigate('/login');  // assuming you have a login page at /login
+      navigate('/login');  // redirect if not a farmer
     }
   }, [navigate]);
 
@@ -28,12 +27,12 @@ export default function FarmerDashboard() {
             ➕ Add New Product
           </button>
         </Link>
-        <Link to="/livestock">
-  <button className="px-4 py-2 bg-yellow-600 text-white rounded">
-    🐄 Livestock
-  </button>
-</Link>
 
+        <Link to="/livestock">
+          <button className="px-4 py-2 bg-yellow-600 text-white rounded">
+            🐄 Livestock
+          </button>
+        </Link>
       </div>
     </div>
   );

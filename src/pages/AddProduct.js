@@ -1,69 +1,102 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { addProduct, loadProducts } from "../mockData";
+import { v4 as uuidv4 } from "uuid";
 
 export default function AddProduct() {
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState('');
-  const [description, setDescription] = useState('');
   const navigate = useNavigate();
+  const [product, setProduct] = useState({
+    name: "",
+    price: "",
+    description: "",
+    image: null,
 
-  // Read user info from localStorage key 'user'
-  const farmer = JSON.parse(localStorage.getItem('user'));
+  });
 
-  const handleSubmit = async (e) => {
+// Resize image before setting it in state
+const handleImageUpload = (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    const img = new Image();
+    img.src = event.target.result;
+
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      const maxWidth = 300;  // max width in px
+      const maxHeight = 300; // max height in px
+      let width = img.width;
+      let height = img.height;
+
+      // Maintain aspect ratio
+      if (width > height) {
+        if (width > maxWidth) {
+          height *= maxWidth / width;
+          width = maxWidth;
+        }
+      } else {
+        if (height > maxHeight) {
+          width *= maxHeight / height;
+          height = maxHeight;
+        }
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, width, height);
+
+      // Convert to base64 and save in state
+      const dataUrl = canvas.toDataURL("image/jpeg", 0.7); // quality 0.7 to reduce size
+      setProduct((prev) => ({ ...prev, image: dataUrl }));
+    };
+  };
+  reader.readAsDataURL(file);
+};
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Check if logged-in user is a farmer
-    if (!farmer || farmer.role !== 'farmer' || !farmer._id) {
-      alert('Please log in as a farmer to add products.');
-      navigate('/login');
-      return;
-    }
-
-    try {
-      await axios.post('http://localhost:5000/api/products', {
-        name,
-        price: Number(price),
-        description,
-        farmerId: farmer._id,
-      });
-
-      navigate('/my-products');
-    } catch (err) {
-      alert('Failed to add product: ' + err.message);
-    }
+    const user = JSON.parse(localStorage.getItem("user"));
+    addProduct({ id: uuidv4(), ...product, farmerId: user.id });
+    navigate("/my-products");
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 max-w-md mx-auto mt-10">
-      <h2 className="text-xl font-bold mb-4">➕ Add Product</h2>
-      <input
-        type="text"
-        placeholder="Product Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        className="w-full p-2 border mb-2"
-        required
-      />
-      <input
-        type="number"
-        placeholder="Price"
-        value={price}
-        onChange={(e) => setPrice(e.target.value)}
-        className="w-full p-2 border mb-2"
-        required
-      />
-      <textarea
-        placeholder="Description"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        className="w-full p-2 border mb-4"
-        required
-      />
-      <button type="submit" className="bg-green-600 text-white p-2 w-full rounded">
-        Add Product
-      </button>
-    </form>
+    <div className="p-4 max-w-md mx-auto">
+      <h2 className="text-2xl font-bold mb-4">➕ Add New Product</h2>
+      <form onSubmit={handleSubmit} className="space-y-3">
+        <input
+          type="text"
+          placeholder="Product Name"
+          className="w-full border p-2 rounded"
+          value={product.name}
+          onChange={(e) => setProduct({ ...product, name: e.target.value })}
+          required
+        />
+        <input
+          type="number"
+          placeholder="Price"
+          className="w-full border p-2 rounded"
+          value={product.price}
+          onChange={(e) => setProduct({ ...product, price: e.target.value })}
+          required
+        />
+        <textarea
+          placeholder="Description"
+          className="w-full border p-2 rounded"
+          value={product.description}
+          rows="3"
+          onChange={(e) => setProduct({ ...product, description: e.target.value })}
+        />
+        <input type="file" accept="image/*" onChange={handleImageUpload} className="w-full" />
+        {product.image && <img src={product.image} alt="Preview" className="w-32 h-32 mt-2 object-cover rounded" />}
+        <button type="submit" className="w-full bg-green-600 text-white py-2 rounded">
+          💾 Save Product
+        </button>
+      </form>
+    </div>
   );
 }
