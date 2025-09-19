@@ -1,18 +1,24 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function Checkout({ cart, clearCart }) {
-  const [paymentMethod, setPaymentMethod] = useState('Mobile Money');
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [address, setAddress] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState("Mobile Money");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
 
   const navigate = useNavigate();
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+  // ✅ Safe total calculation with quantity defaulting to 1
+  const total = cart.reduce(
+    (sum, item) =>
+      sum + (Number(item.price) || 0) * (Number(item.quantity) || 1),
+    0
+  );
 
   const handlePlaceOrder = () => {
     if (!name || !phone || !address) {
-      alert('Please fill out all user details.');
+      alert("⚠️ Please fill out all user details.");
       return;
     }
 
@@ -28,15 +34,14 @@ export default function Checkout({ cart, clearCart }) {
     };
 
     // ✅ Save to localStorage
-    const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+    const orders = JSON.parse(localStorage.getItem("orders") || "[]");
     orders.push(order);
-    localStorage.setItem('orders', JSON.stringify(orders));
+    localStorage.setItem("orders", JSON.stringify(orders));
 
-    // 📧 Mock Email Confirmation
     alert(`📧 Confirmation sent to ${name} (${phone})`);
 
     clearCart();
-    navigate('/success');
+    navigate("/success", { state: order });
   };
 
   return (
@@ -44,50 +49,67 @@ export default function Checkout({ cart, clearCart }) {
       <h1>🧾 Checkout</h1>
 
       {cart.length === 0 ? (
-        <p>Your cart is empty. <Link to="/marketplace">Go shopping</Link></p>
+        <p>
+          Your cart is empty. <Link to="/marketplace">Go shopping</Link>
+        </p>
       ) : (
         <>
+          {/* Cart Items */}
           <div style={{ marginBottom: 20 }}>
             {cart.map((item) => (
-              <div key={item.id} style={{ borderBottom: '1px solid #ddd', paddingBottom: 10, marginBottom: 10 }}>
-                <strong>{item.name}</strong> – ${item.price} × {item.quantity}
+              <div
+                key={item.id}
+                style={{
+                  borderBottom: "1px solid #ddd",
+                  paddingBottom: 10,
+                  marginBottom: 10,
+                }}
+              >
+                <strong>{item.name}</strong> – ${item.price} ×{" "}
+                {item.quantity || 1} kg
               </div>
             ))}
           </div>
 
+          {/* Order Total */}
           <h3>Total: ${total.toFixed(2)}</h3>
 
+          {/* Buyer Info */}
           <div style={{ marginTop: 20, maxWidth: 400 }}>
             <input
               type="text"
               placeholder="Full Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              style={{ width: '100%', padding: 10, marginBottom: 10 }}
+              style={{ width: "100%", padding: 10, marginBottom: 10 }}
             />
             <input
               type="tel"
               placeholder="Phone Number"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              style={{ width: '100%', padding: 10, marginBottom: 10 }}
+              style={{ width: "100%", padding: 10, marginBottom: 10 }}
             />
             <textarea
               placeholder="Address"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-              style={{ width: '100%', padding: 10, marginBottom: 20 }}
+              style={{ width: "100%", padding: 10, marginBottom: 20 }}
             />
           </div>
 
-          <label htmlFor="payment" style={{ display: 'block', marginBottom: 10 }}>
+          {/* Payment Method */}
+          <label
+            htmlFor="payment"
+            style={{ display: "block", marginBottom: 10 }}
+          >
             Select Payment Method:
           </label>
           <select
             id="payment"
             value={paymentMethod}
             onChange={(e) => setPaymentMethod(e.target.value)}
-            style={{ padding: 10, width: '100%', maxWidth: 300 }}
+            style={{ padding: 10, width: "100%", maxWidth: 300 }}
           >
             <option value="Mobile Money">Mobile Money</option>
             <option value="Bank Transfer">Bank Transfer</option>
@@ -95,19 +117,20 @@ export default function Checkout({ cart, clearCart }) {
             <option value="Cash on Delivery">Cash on Delivery</option>
           </select>
 
+          {/* Place Order */}
           <button
             onClick={handlePlaceOrder}
             style={{
               marginTop: 30,
-              padding: '10px 20px',
-              backgroundColor: '#4CAF50',
-              color: 'white',
-              border: 'none',
+              padding: "10px 20px",
+              backgroundColor: "#4CAF50",
+              color: "white",
+              border: "none",
               borderRadius: 5,
-              cursor: 'pointer'
+              cursor: "pointer",
             }}
           >
-            Place Order
+            ✅ Place Order
           </button>
 
           <div style={{ marginTop: 20 }}>

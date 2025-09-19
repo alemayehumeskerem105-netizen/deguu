@@ -6,15 +6,12 @@ export default function Header({ user, cart, setUser }) {
   return (
     <header style={{ padding: 10, backgroundColor: '#f4f4f4', display: 'flex', justifyContent: 'space-between'}}>
       <div>
-        <Link to="/" style={{ textDecoration: 'none', color: 'black',marginRight: '80px' }}>Home</Link>
-
-
-<Link to="/marketplace" style={{ textDecoration: 'none', color: 'black',marginRight: '80px' }}>Marketplace</Link>
-<Link to="/chat" style={{ textDecoration: 'none', color: 'black' ,marginRight: '80px'}}>Chat</Link>
-<Link to="/cart" style={{ textDecoration: 'none', color: 'black',marginRight: '80px' }}>
-  Cart ({cart.length})
-</Link>
-
+        <Link to="/" style={{ textDecoration: 'none', color: 'black', marginRight: '80px' }}>Home</Link>
+        <Link to="/about" style={{ textDecoration: 'none', color: 'black', marginRight: '80px' }}>About</Link> {/* Fixed */}
+        <Link to="/marketplace" style={{ textDecoration: 'none', color: 'black', marginRight: '80px' }}>Marketplace</Link>
+        <Link to="/cart" style={{ textDecoration: 'none', color: 'black', marginRight: '80px' }}>
+          Cart ({cart.length})
+        </Link>
       </div>
       <div>
         {user ? (

@@ -25,15 +25,6 @@ function Home({ user }) {
 const handleCategoryClick = (path) => {
     navigate(path); // Navigate to category page
   };
-  const handleJoinBuyer = () => {
-  navigate("/signup", { state: { redirectTo: "/farmers" } });
-};
-
-const handleJoinFarmer = () => {
-  navigate("/join-farmer");
-};
-
-
 
   // Rotate hero images every 7 seconds
   useEffect(() => {
@@ -51,9 +42,7 @@ const handleJoinFarmer = () => {
         style={{ backgroundImage: `url('${heroImages[currentHero]}')` }}
       >
         <div className="hero-overlay">
-          <h1>Connect Farmers & Buyers Seamlessly</h1>
-          <p>Find trusted farmers, buy fresh products, and grow your business.</p>
-
+          <h1>ደጉ ባላገሩ</h1>
           {/* Search Bar */}
           <div className="search-bar">
             <input
@@ -68,14 +57,7 @@ const handleJoinFarmer = () => {
           </div>
 
           {/* CTA Buttons */}
-          {!user && (
-            <div className="cta-buttons">
-              {/* Navigate to FarmerJoin page */}
-    <Link to="/join-farmer" className="btn-primary">Join as Farmer</Link>
-     {/* Navigate to Signup (for buyers) */}
-              <Link to="/signup" className="btn-secondary">Join as Buyer</Link>
-            </div>
-          )}
+
         </div>
       </section>
 
@@ -117,7 +99,7 @@ const handleJoinFarmer = () => {
           <div className="step">
             <span>1</span>
             <h3>Sign Up</h3>
-            <p>Create your account as a farmer or buyer.</p>
+            
           </div>
           <div className="step">
             <span>2</span>

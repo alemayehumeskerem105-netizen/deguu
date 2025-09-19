@@ -1,37 +1,45 @@
 // src/pages/Signup.js
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function Signup({ setUser }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("farmer"); // default role
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
-    // Create new user
-    const newUser = {
-      id: Date.now(),
-      name,
-      email,
-      password,
-      role,
-    };
+    try {
+      // 🔹 Connect to backend (port 5000)
+      const res = await axios.post("http://localhost:5000/api/auth/signup", {
+        name,
+        email,
+        password,
+        role,
+      });
 
-    // Save user to localStorage
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    users.push(newUser);
-    localStorage.setItem("users", JSON.stringify(users));
+      // Backend should return { user, token }
+      const { user, token } = res.data;
 
-    // Auto-login after signup
-    localStorage.setItem("user", JSON.stringify(newUser));
-    setUser(newUser);
+      // Save user + token in localStorage
+      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("token", token);
 
-    // Redirect based on role
-    navigate("/dashboard");
+      setUser(user);
+
+      // Redirect to dashboard
+      navigate("/dashboard");
+    } catch (err) {
+      alert(err.response?.data?.message || "Signup failed!");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -67,12 +75,10 @@ export default function Signup({ setUser }) {
         onChange={(e) => setPassword(e.target.value)}
         required
       />
-      <select value={role} onChange={(e) => setRole(e.target.value)}>
-        <option value="farmer">Farmer</option>
-        <option value="buyer">Buyer</option>
-      </select>
+
       <button
         type="submit"
+        disabled={loading}
         style={{
           padding: "10px",
           backgroundColor: "#232F3E",
@@ -81,7 +87,7 @@ export default function Signup({ setUser }) {
           borderRadius: "4px",
         }}
       >
-        Signup
+        {loading ? "Signing up..." : "Signup"}
       </button>
     </form>
   );
